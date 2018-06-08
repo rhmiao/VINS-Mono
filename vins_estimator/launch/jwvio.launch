@@ -1,0 +1,30 @@
+<!--for jwvio-->
+<launch>
+    <arg name="config_path" default = "$(find feature_tracker)/../config/jwtest/jw_config.yaml" />
+	  <arg name="vins_path" default = "$(find feature_tracker)/../config/../" />
+    
+    <node name="feature_tracker" pkg="feature_tracker" type="feature_tracker" output="log">
+        <param name="config_file" type="string" value="$(arg config_path)" />
+        <param name="vins_folder" type="string" value="$(arg vins_path)" />
+    </node>
+
+    <node name="vins_estimator" pkg="vins_estimator" type="vins_estimator" output="screen">
+       <param name="config_file" type="string" value="$(arg config_path)" />
+       <param name="vins_folder" type="string" value="$(arg vins_path)" />
+    </node>
+
+    <node name="pose_graph" pkg="pose_graph" type="pose_graph" output="screen">
+        <param name="config_file" type="string" value="$(arg config_path)" />
+        <param name="visualization_shift_x" type="int" value="0" />
+        <param name="visualization_shift_y" type="int" value="0" />
+        <param name="skip_cnt" type="int" value="0" />
+        <param name="skip_dis" type="double" value="0" />
+    </node>
+
+    <node name="vio_zmq_server" pkg="vio_zmq" type="vio_zmq_main.py" respawn="false" output="screen">
+    </node>
+
+    <node name="transport" pkg="image_transport" type="republish" output="screen" args="compressed in:=/zed/left/image_rect_color raw out:=/zed/left/image_raw"> 
+    </node>
+
+</launch>

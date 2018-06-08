@@ -38,7 +38,7 @@ void img_callback(const sensor_msgs::ImageConstPtr &img_msg)
     if (img_msg->header.stamp.toSec() - last_image_time > 1.0 || img_msg->header.stamp.toSec() < last_image_time)
     {
         ROS_WARN("image discontinue! reset the feature tracker!");
-        first_image_flag = true; 
+        first_image_flag = true;
         last_image_time = 0;
         pub_count = 1;
         std_msgs::Bool restart_flag;

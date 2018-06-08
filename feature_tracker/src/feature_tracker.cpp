@@ -33,6 +33,32 @@ FeatureTracker::FeatureTracker()
 {
 }
 
+FeatureTracker::~FeatureTracker()
+{
+    mask.release();
+    fisheye_mask.release();
+    prev_img.release();
+    cur_img.release();
+    forw_img.release();
+
+    vector<cv::Point2f>().swap(n_pts);
+    vector<cv::Point2f>().swap(prev_pts);
+    vector<cv::Point2f>().swap(cur_pts);
+    vector<cv::Point2f>().swap(forw_pts);
+    vector<cv::Point2f>().swap(prev_un_pts);
+    vector<cv::Point2f>().swap(cur_un_pts);
+    vector<cv::Point2f>().swap(pts_velocity);
+
+    vector<int>().swap(ids);
+    vector<int>().swap(track_cnt);
+
+    map<int, cv::Point2f> emptyMap;
+    cur_un_pts_map.swap(emptyMap);
+    cur_un_pts_map.clear();
+    prev_un_pts_map.swap(emptyMap);
+    prev_un_pts_map.clear();
+}
+
 void FeatureTracker::setMask()
 {
     if(FISHEYE)
